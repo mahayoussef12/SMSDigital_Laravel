@@ -32,11 +32,5 @@ pipeline {
         }
     }
 
-    post {
-        failure {
-            mail to: 'youssefmaha299@gmail.com',
-                 subject: "Échec pipeline Jenkins - Laravel",
-                 body: "Le build a échoué."
-        }
-    }
+
 }
