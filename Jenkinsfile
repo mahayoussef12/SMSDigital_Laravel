@@ -8,7 +8,7 @@ pipeline {
     stages {
         stage('Cloner le code') {
             steps {
-                git url: 'https://github.com/tonrepo/tonprojet.git', branch: 'main'
+                git url: 'https://github.com/mahayoussef12/SMSDigital_Laravel', branch: 'main'
             }
         }
 
