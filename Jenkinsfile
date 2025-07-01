@@ -18,17 +18,17 @@ pipeline {
             }
         }
 
-        stage('Connexion Docker Hub') {
-            steps {
-                withCredentials([usernamePassword(credentialsId: 'docker', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
-                    bat """
-                        docker login -u %DOCKER_USER% -p %DOCKER_PASS%
-                        docker push %IMAGE_NAME%:latest
-                        docker logout
-                    """
-                }
-            }
-        }
+         stage('Connexion Docker Hub') {
+         steps {
+             withCredentials([usernamePassword(credentialsId: 'docker', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
+                 bat """
+                     docker login -u %DOCKER_USER% -p %DOCKER_PASS%
+                     docker push %IMAGE_NAME%:latest
+                     docker logout
+                 """
+             }
+         }
+     }
 
     }
 }
