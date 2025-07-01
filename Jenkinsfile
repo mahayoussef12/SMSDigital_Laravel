@@ -2,42 +2,35 @@ pipeline {
     agent any
 
     environment {
-        IMAGE_NAME = "laravel-sms-app"
+        IMAGE_NAME = 'mahayoussef/codelaravel'
+
     }
 
     stages {
-        stage('Cloner le code') {
+        stage('Checkout') {
             steps {
-                git url: 'https://github.com/mahayoussef12/SMSDigital_Laravel', branch: 'main'
+                git branch: 'main', url: 'https://github.com/mahayoussef12/SMSDigital_Laravel'
             }
         }
 
-        stage('Construire l’image Docker') {
+        stage('Build docker image ') {
             steps {
-                sh 'docker build -t $IMAGE_NAME .'
+                bat "docker build -t %IMAGE_NAME%:latest ."
             }
         }
 
-        stage('Exécuter les tests') {
+        stage('Connexion Docker Hub') {
             steps {
-                sh 'docker run --rm $IMAGE_NAME php artisan test'
+                withCredentials([usernamePassword(credentialsId: 'docker', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
+                    bat """
+                        echo %DOCKER_PASS% |
+                        docker login -u %DOCKER_USER% --password-stdin
+                        docker push %IMAGE_NAME%:latest
+                        docker logout
+
+                    """
+                }
             }
         }
 
-        stage('Déployer (dev)') {
-            steps {
-                echo 'Déploiement sur environnement de test/dev...'
-                sh 'docker-compose down && docker-compose up -d --build'
-            }
-        }
-    }
 
-     post {
-            success {
-                echo "🚀 Pipeline exécuté avec succès"
-            }
-            failure {
-                echo "❌ Pipeline échoué"
-            }
-        }
-}
