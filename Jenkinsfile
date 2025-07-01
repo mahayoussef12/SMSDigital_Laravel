@@ -18,7 +18,7 @@ pipeline {
             }
         }
 
-         stage('Connexion Docker Hub') {
+         stage('Push Image To Docker Hub') {
          steps {
              withCredentials([usernamePassword(credentialsId: 'docker', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
                  bat """
