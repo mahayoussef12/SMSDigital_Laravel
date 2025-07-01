@@ -3,7 +3,6 @@ pipeline {
 
     environment {
         IMAGE_NAME = 'mahayoussef/codelaravel'
-
     }
 
     stages {
@@ -13,7 +12,7 @@ pipeline {
             }
         }
 
-        stage('Build docker image ') {
+        stage('Build docker image') {
             steps {
                 bat "docker build -t %IMAGE_NAME%:latest ."
             }
@@ -27,11 +26,9 @@ pipeline {
                         docker login -u %DOCKER_USER% --password-stdin
                         docker push %IMAGE_NAME%:latest
                         docker logout
-
                     """
                 }
             }
         }
-
-
- }
+    }
+}
